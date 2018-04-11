@@ -1,0 +1,14 @@
+# Dependencies
+node_modules
+
+# Logs
+*.log
+
+# Code coverage
+coverage
+
+# OS stuff
+.DS_Store
+
+# Built files
+dist
