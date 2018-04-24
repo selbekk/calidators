@@ -198,6 +198,51 @@ isBlacklisted({ message, blacklist })('Chad') === message;
 isBlacklisted({ message, blacklist })('Bret') === message;
 ```
 
+#### `isMinLength`
+
+Validates that an input value is at least a given number of characters long.
+
+```js
+import { isMinLength } from 'calidators';
+
+const message = 'Too $hort';
+
+isMinLength({ message, length: 3 })('') === null;
+isMinLength({ message, length: 3 })('Pa$$W0rd') === null;
+isMinLength({ message, length: 3 })('yo') === message;
+isMinLength({ message, length: 3 })('0') === message;
+```
+
+#### `isMaxLength`
+
+Validates that an input value is at most a given number of characters long.
+
+```js
+import { isMaxLength } from 'calidators';
+
+const message = 'Too $hort';
+
+isMaxLength({ message, length: 3 })('') === null;
+isMaxLength({ message, length: 3 })('0') === null;
+isMaxLength({ message, length: 3 })('fin') === null;
+isMaxLength({ message, length: 3 })('test') === message;
+```
+
+#### `isExactLength`
+
+Validates that an input value is exactly a given number of characters long.
+
+```js
+import { isExactLength } from 'calidators';
+
+const message = 'Too $hort';
+
+isExactLength({ message, length: 3 })('') === null;
+isExactLength({ message, length: 3 })('foo') === null;
+isExactLength({ message, length: 3 })('ba') === message;
+isExactLength({ message, length: 3 })('bazz') === message;
+```
+
 ## Want to contribute?
 
 I'd love some help! Report bugs, help me document stuff, create new validators

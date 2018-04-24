@@ -7,3 +7,6 @@ export { default as isEmail } from './isEmail';
 export { default as isRegexMatch } from './isRegexMatch';
 export { default as isWhitelisted } from './isWhitelisted';
 export { default as isBlacklisted } from './isBlacklisted';
+export { default as isMinLength } from './isMinLength';
+export { default as isMaxLength } from './isMaxLength';
+export { default as isExactLength } from './isExactLength';
