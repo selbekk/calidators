@@ -33,7 +33,7 @@ Each validator is a curried function that first accepts a configuration, and
 then the value. The configuration is an object with a `message` field and an
 optional extra field that depends on the validator.
 
-If the validator passes, it returns the `message` field. If the validator fails,
+If the validator fails, it returns the `message` field. If the validator passes,
 it returns `null`.
 
 Here's an example where I - very step by step - check the content of a field:
