@@ -251,9 +251,9 @@ Validates that a value contains at least one digit.
 import { hasDigit } from 'calidators';
 
 const message = 'Value must have at least one digit';
-isEmail({ message })('') === null;
-isEmail({ message })('Hello, I am 12') === null;
-isEmail({ message })('Hi') === message;
+hasDigit({ message })('') === null;
+hasDigit({ message })('Hello, I am 12') === null;
+hasDigit({ message })('Hi') === message;
 ```
 
 ## Want to contribute?
