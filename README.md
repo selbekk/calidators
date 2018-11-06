@@ -243,6 +243,19 @@ isExactLength({ message, length: 3 })('ba') === message;
 isExactLength({ message, length: 3 })('bazz') === message;
 ```
 
+#### `hasDigit`
+
+Validates that a value contains at least one digit.
+
+```js
+import { hasDigit } from 'calidators';
+
+const message = 'Value must have at least one digit';
+isEmail({ message })('') === null;
+isEmail({ message })('Hello, I am 12') === null;
+isEmail({ message })('Hi') === message;
+```
+
 ## Want to contribute?
 
 I'd love some help! Report bugs, help me document stuff, create new validators
