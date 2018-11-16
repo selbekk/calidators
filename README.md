@@ -243,9 +243,21 @@ isExactLength({ message, length: 3 })('ba') === message;
 isExactLength({ message, length: 3 })('bazz') === message;
 ```
 
+#### `hasUppercase`
+Validates that a value contains at least one uppercase character.
+
+```js
+import { hasUppercase } from 'calidators';
+
+const message = 'Value must contain at least one uppercase character';
+hasUppercase({ message })('') === null;
+hasUppercase({ message })('Hello, John') === null;
+hasUppercase({ message })('no uppercase here') === message;
+```
+
 #### `hasLowercase`
 
-Validates that a value contains at least one uppercase character.
+Validates that a value contains at least one lowercase character.
 
 ```js
 import { hasLowercase } from 'calidators';
