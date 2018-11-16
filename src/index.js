@@ -10,5 +10,6 @@ export { default as isBlacklisted } from './isBlacklisted';
 export { default as isMinLength } from './isMinLength';
 export { default as isMaxLength } from './isMaxLength';
 export { default as isExactLength } from './isExactLength';
+export { default as hasDigit } from './hasDigit';
 export { default as hasUppercase } from './hasUppercase';
 export { default as hasLowercase } from './hasLowercase';

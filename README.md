@@ -243,7 +243,21 @@ isExactLength({ message, length: 3 })('ba') === message;
 isExactLength({ message, length: 3 })('bazz') === message;
 ```
 
+#### `hasDigit`
+
+Validates that a value contains at least one digit.
+
+```js
+import { hasDigit } from 'calidators';
+
+const message = 'Value must have at least one digit';
+hasDigit({ message })('') === null;
+hasDigit({ message })('Hello, I am 12') === null;
+hasDigit({ message })('Hi') === message;
+```
+
 #### `hasUppercase`
+
 Validates that a value contains at least one uppercase character.
 
 ```js
@@ -266,6 +280,7 @@ const message = 'Value must contain at least one lowercase character';
 hasLowercase({ message })('') === null;
 hasLowercase({ message })('Hello, John') === null;
 hasLowercase({ message })('SCREAM UPPERCASE') === message;
+
 ```
 
 ## Want to contribute?
