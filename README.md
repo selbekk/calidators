@@ -152,8 +152,8 @@ import { isGreaterThan, isLessThan } from 'calidators';
 
 #### `isEmail`
 
-Validates that a value is a potentially valid email address. This is weak on
-purpose to save bytes - but it will validate most email address errors.
+Validates that a value is a potentially valid email address. This uses the same
+validation logic as browsers do when they see an input with `type="email"`.
 
 ```js
 import { isEmail } from 'calidators';
