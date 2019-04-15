@@ -112,6 +112,21 @@ isEqual({ message, value })('true') === null;
 isEqual({ message, value })('false') === message;
 ```
 
+#### `isNotEqual`
+
+Validates that a value does not equal a given value. The value is cast to a String,
+and then checked for equality with the `===` operator.
+
+```js
+import { isNotEqual } from 'calidators';
+
+const message = "Value must not be 'true'";
+const value = true;
+isNotEqual({ message, value })('') === null;
+isNotEqual({ message, value })('false') === null;
+isNotEqual({ message, value })('true') === message;
+```
+
 #### `isGreaterThan` / `isLessThan`
 
 Validates that a value is greater or less than a given number.
