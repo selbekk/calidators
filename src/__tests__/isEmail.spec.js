@@ -10,8 +10,9 @@ describe('isEmail validator', () => {
     it('accepts valid email addresses', () => {
         expect(validate('test@test.com')).toBe(null);
         expect(validate('i-am-an@email.com')).toBe(null);
-        expect(validate('123@456.789')).toBe(null);
-        expect(validate('yolo@swag')).toBe(null);
+        expect(validate('123@456.no')).toBe(null);
+        expect(validate('yolo@swag.ninja')).toBe(null);
+        expect(validate('email+address@email.com')).toBe(null);
     });
     it('rejects invalid email addresses', () => {
         expect(validate('not an email')).toBe(message);
