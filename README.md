@@ -80,6 +80,9 @@ import { isRequired } from 'calidators';
 
 const message = 'Field is required';
 isRequired({ message })('') === message;
+isRequired({ message })(' ') === message;
+isRequired({ message })(null) === message;
+isRequired({ message })(undefined) === message;
 isRequired({ message })('Some input') === null;
 ```
 
@@ -91,7 +94,7 @@ Validates that a field only contains numeric characters
 import { isNumber } from 'calidators';
 
 const message = 'Field must be a number';
-isNumber({ message })('') === null;
+isNumber({ message })('') === message;
 isNumber({ message })('123') === null;
 isNumber({ message })('123.321') === null;
 isNumber({ message })('Not a number') === message;
@@ -107,7 +110,7 @@ import { isEqual } from 'calidators';
 
 const message = "Value must be 'true'";
 const value = true;
-isEqual({ message, value })('') === null;
+isEqual({ message, value })('') === message;
 isEqual({ message, value })('true') === null;
 isEqual({ message, value })('false') === message;
 ```
@@ -122,7 +125,7 @@ import { isNotEqual } from 'calidators';
 
 const message = "Value must not be 'true'";
 const value = true;
-isNotEqual({ message, value })('') === null;
+isNotEqual({ message, value })('') === message;
 isNotEqual({ message, value })('false') === null;
 isNotEqual({ message, value })('true') === message;
 ```
@@ -137,7 +140,7 @@ import { isGreaterThan, isLessThan } from 'calidators';
 {
     const message = 'Value must be greater than 5';
     const value = 5;
-    isGreaterThan({ message, value })('') === null;
+    isGreaterThan({ message, value })('') === message;
     isGreaterThan({ message, value })('6') === null;
     isGreaterThan({ message, value })('5') === message;
 }
@@ -159,7 +162,7 @@ validation logic as browsers do when they see an input with `type="email"`.
 import { isEmail } from 'calidators';
 
 const message = 'Value must be a valid email';
-isEmail({ message })('') === null;
+isEmail({ message })('') === message;
 isEmail({ message })('valid@email.com') === null;
 isEmail({ message })('not a valid @ email') === message;
 ```
@@ -173,7 +176,7 @@ import { isRegexMatch } from 'calidators';
 
 const message = 'Filename must end with either .js or .jsx';
 const regex = /.jsx?$/;
-isRegexMatch({ message, regex })('') === null;
+isRegexMatch({ message, regex })('') === message;
 isRegexMatch({ message, regex })('userReducer.js') === null;
 isRegexMatch({ message, regex })('App.jsx') === null;
 isRegexMatch({ message, regex })('.jsx-files') === message;
@@ -190,7 +193,7 @@ import { isWhitelisted } from 'calidators';
 
 const message = "You're not a bro, bro";
 const whitelist = ['Chad', 'Bret'];
-isWhitelisted({ message, whitelist })('') === null;
+isWhitelisted({ message, whitelist })('') === message;
 isWhitelisted({ message, whitelist })('Chad') === null;
 isWhitelisted({ message, whitelist })('Bret') === null;
 isWhitelisted({ message, whitelist })('Ping') === message;
@@ -222,7 +225,7 @@ import { isMinLength } from 'calidators';
 
 const message = 'Too $hort';
 
-isMinLength({ message, length: 3 })('') === null;
+isMinLength({ message, length: 3 })('') === message;
 isMinLength({ message, length: 3 })('Pa$$W0rd') === null;
 isMinLength({ message, length: 3 })('yo') === message;
 isMinLength({ message, length: 3 })('0') === message;
@@ -252,7 +255,7 @@ import { isExactLength } from 'calidators';
 
 const message = 'Too $hort';
 
-isExactLength({ message, length: 3 })('') === null;
+isExactLength({ message, length: 3 })('') === message;
 isExactLength({ message, length: 3 })('foo') === null;
 isExactLength({ message, length: 3 })('ba') === message;
 isExactLength({ message, length: 3 })('bazz') === message;
@@ -266,7 +269,7 @@ Validates that a value contains at least one digit.
 import { hasDigit } from 'calidators';
 
 const message = 'Value must have at least one digit';
-hasDigit({ message })('') === null;
+hasDigit({ message })('') === message;
 hasDigit({ message })('Hello, I am 12') === null;
 hasDigit({ message })('Hi') === message;
 ```
@@ -279,7 +282,7 @@ Validates that a value contains at least one uppercase character.
 import { hasUppercase } from 'calidators';
 
 const message = 'Value must contain at least one uppercase character';
-hasUppercase({ message })('') === null;
+hasUppercase({ message })('') === message;
 hasUppercase({ message })('Hello, John') === null;
 hasUppercase({ message })('no uppercase here') === message;
 ```
@@ -292,10 +295,9 @@ Validates that a value contains at least one lowercase character.
 import { hasLowercase } from 'calidators';
 
 const message = 'Value must contain at least one lowercase character';
-hasLowercase({ message })('') === null;
+hasLowercase({ message })('') === message;
 hasLowercase({ message })('Hello, John') === null;
 hasLowercase({ message })('SCREAM UPPERCASE') === message;
-
 ```
 
 ## Want to contribute?
