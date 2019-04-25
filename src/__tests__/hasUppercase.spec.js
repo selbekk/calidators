@@ -4,9 +4,6 @@ const message = 'message';
 const validate = hasUppercase({ message });
 
 describe('hasUppercase validator', () => {
-    it('accepts the empty string', () => {
-        expect(validate('')).toBe(null);
-    });
     it('accepts valid string containing uppercase character', () => {
         expect(validate('asdAA#2')).toBe(null);
         expect(validate('6as5AAA')).toBe(null);
@@ -14,6 +11,7 @@ describe('hasUppercase validator', () => {
         expect(validate('Hell0')).toBe(null);
     });
     it('rejects invalid string without uppercase character', () => {
+        expect(validate('')).toBe(message);
         expect(validate('all lowercase')).toBe(message);
         expect(validate('abcdefgh')).toBe(message);
         expect(validate('123_@@@_bbb')).toBe(message);

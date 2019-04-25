@@ -3,9 +3,6 @@ import { isExactLength } from '..';
 const message = 'fail';
 
 describe('isExactLength validator', () => {
-    it('accepts the empty string', () => {
-        expect(isExactLength({ message, length: 3 })('')).toBe(null);
-    });
     it('accepts when length is equal to config length', () => {
         expect(isExactLength({ message, length: 3 })('lol')).toBe(null);
         expect(isExactLength({ message, length: 3 })('0mg')).toBe(null);
@@ -19,6 +16,7 @@ describe('isExactLength validator', () => {
         expect(isExactLength({ message, length: 3 })('four')).toBe(message);
     });
     it('accepts when length is shorter than config length', () => {
+        expect(isExactLength({ message, length: 3 })('')).toBe(message);
         expect(isExactLength({ message, length: 3 })('hi')).toBe(message);
         expect(isExactLength({ message, length: 3 })('yo')).toBe(message);
         expect(isExactLength({ message, length: 3 })(' ')).toBe(message);

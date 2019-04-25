@@ -2,11 +2,6 @@ import isWhitelisted from '../isWhitelisted';
 
 const message = 'fail';
 describe('isWhitelisted validator', () => {
-    it('accepts the empty string', () => {
-        const whitelist = ['red', 'blue'];
-        expect(isWhitelisted({ message, whitelist })('')).toBe(null);
-    });
-
     it('accepts when value is in whitelist', () => {
         const whitelist = ['red', 'blue'];
         expect(isWhitelisted({ message, whitelist })('red')).toBe(null);
@@ -22,6 +17,7 @@ describe('isWhitelisted validator', () => {
 
     it("rejects when value isn't in whitelist", () => {
         const whitelist = ['green', 'yellow'];
+        expect(isWhitelisted({ message, whitelist })('')).toBe(message);
         expect(isWhitelisted({ message, whitelist })('red')).toBe(message);
         expect(isWhitelisted({ message, whitelist })('blue')).toBe(message);
     });

@@ -1,8 +1,6 @@
 export default config => value => {
-    if (value === '') {
-        return null;
-    }
     let isValid;
+
     switch (typeof config.value) {
         case 'number': {
             isValid = Number(value) === config.value;
@@ -17,5 +15,6 @@ export default config => value => {
             isValid = String(value) === config.value;
         }
     }
+
     return isValid ? null : config.message;
 };

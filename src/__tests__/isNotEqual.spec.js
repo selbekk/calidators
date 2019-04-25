@@ -3,10 +3,8 @@ import isNotEqual from '../isNotEqual';
 const message = 'fail';
 
 describe('isNotEqual validator', () => {
-    it('accepts the empty string', () => {
-        expect(isNotEqual({ message, value: 'arnold' })('')).toBe(null);
-    });
     it('accepts not equal strings', () => {
+        expect(isNotEqual({ message, value: 'arnold' })('')).toBe(null);
         expect(isNotEqual({ message, value: 'arnold' })('sylvester')).toBe(
             null,
         );

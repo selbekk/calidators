@@ -2,13 +2,9 @@ import isBlacklisted from '../isBlacklisted';
 
 const message = 'fail';
 describe('isBlacklisted validator', () => {
-    it('accepts the empty string', () => {
-        const blacklist = ['red', 'blue'];
-        expect(isBlacklisted({ message, blacklist })('')).toBe(null);
-    });
-
     it('accepts when value is not in blacklist', () => {
         const blacklist = ['green', 'yellow'];
+        expect(isBlacklisted({ message, blacklist })('')).toBe(null);
         expect(isBlacklisted({ message, blacklist })('red')).toBe(null);
         expect(isBlacklisted({ message, blacklist })('blue')).toBe(null);
     });

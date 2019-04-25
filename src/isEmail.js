@@ -2,9 +2,5 @@
 // This is the same email regex as browsers use when type="email"
 const EMAIL_REGEXP = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
-export default config => value => {
-    if (value === '') {
-        return null;
-    }
-    return !EMAIL_REGEXP.test(value) ? config.message : null;
-};
+export default config => value =>
+    !EMAIL_REGEXP.test(value) ? config.message : null;

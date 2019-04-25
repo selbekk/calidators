@@ -4,9 +4,6 @@ const message = 'message';
 const validate = isEmail({ message });
 
 describe('isEmail validator', () => {
-    it('accepts the empty string', () => {
-        expect(validate('')).toBe(null);
-    });
     it('accepts valid email addresses', () => {
         expect(validate('test@test.com')).toBe(null);
         expect(validate('i-am-an@email.com')).toBe(null);
@@ -15,6 +12,7 @@ describe('isEmail validator', () => {
         expect(validate('email+address@email.com')).toBe(null);
     });
     it('rejects invalid email addresses', () => {
+        expect(validate('')).toBe(message);
         expect(validate('not an email')).toBe(message);
         expect(validate('notevenremotely')).toBe(message);
         expect(validate('@missing.com')).toBe(message);

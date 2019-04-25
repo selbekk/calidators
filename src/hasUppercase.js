@@ -1,8 +1,4 @@
 const UPPERCASE_REGEXP = /[A-Z]+/;
 
-export default config => value => {
-    if (value === '') {
-        return null;
-    }
-    return !UPPERCASE_REGEXP.test(value) ? config.message : null;
-};
+export default config => value =>
+    !UPPERCASE_REGEXP.test(value) ? config.message : null;
