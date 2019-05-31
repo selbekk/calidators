@@ -1,5 +1,2 @@
-export default config => value => {
-    const stringWhitelist = config.whitelist.map(w => String(w));
-
-    return !stringWhitelist.includes(value) ? config.message : null;
-};
+export default config => value =>
+    !config.whitelist.includes(value) ? config.message : null;

@@ -1,20 +1,7 @@
-export default config => value => {
-    let isValid;
+import { getType } from './utilities';
 
-    switch (typeof config.value) {
-        case 'number': {
-            isValid = Number(value) !== config.value;
-            break;
-        }
-        case 'boolean': {
-            isValid = config.value ? value !== 'true' : value !== 'false';
-            break;
-        }
-        case 'string':
-        default: {
-            isValid = String(value) !== config.value;
-        }
-    }
-
-    return isValid ? null : config.message;
-};
+export default config => value =>
+    getType(config.value) === getType(value) &&
+    JSON.stringify(config.value) === JSON.stringify(value)
+        ? config.message
+        : null;

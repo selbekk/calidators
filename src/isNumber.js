@@ -1,1 +1,4 @@
-export default config => value => (isNaN(value) ? config.message : null);
+import { isNumber, toNumber } from './utilities';
+
+export default config => value =>
+    isNumber(toNumber(value)) ? config.message : null;

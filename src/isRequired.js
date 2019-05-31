@@ -1,6 +1,4 @@
+import { isNil, isEmptyString } from './utilities';
+
 export default config => value =>
-    [undefined, null, ''].includes(
-        typeof value === 'string' ? value.trim() : value,
-    )
-        ? config.message
-        : null;
+    isNil(value) || isEmptyString(value) ? config.message : null;
