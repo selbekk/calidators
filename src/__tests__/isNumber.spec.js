@@ -11,8 +11,9 @@ describe('isNumber validator', () => {
         expect(validate('1.000000001')).toBe(null);
         expect(validate('10e2')).toBe(null);
     });
+
     it('rejects when value is not a number', () => {
-        expect(validate('')).toBe(null);
+        expect(validate('')).toBe(message);
         expect(validate('not a number')).toBe(message);
         expect(validate('NaN')).toBe(message);
         expect(validate('12x21')).toBe(message);

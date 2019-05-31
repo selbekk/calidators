@@ -10,6 +10,8 @@ describe('isRequired', () => {
         expect(validator(0)).toBe(null);
         expect(validator(true)).toBe(null);
         expect(validator(false)).toBe(null);
+        expect(validator([])).toBe(null);
+        expect(validator({})).toBe(null);
     });
 
     it('rejects when value is empty', () => {

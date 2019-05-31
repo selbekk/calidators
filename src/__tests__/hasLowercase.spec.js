@@ -10,6 +10,7 @@ describe('hasLowercase validator', () => {
         expect(validate('_aA_111')).toBe(null);
         expect(validate('Hell0')).toBe(null);
     });
+
     it('rejects invalid string without lowercase character', () => {
         expect(validate('')).toBe(message);
         expect(validate('789 566 200')).toBe(message);
@@ -18,5 +19,14 @@ describe('hasLowercase validator', () => {
         expect(validate('####LOOK25')).toBe(message);
         expect(validate('LOVE UPPERCASE')).toBe(message);
         expect(validate('(/!&"#(')).toBe(message);
+    });
+
+    it('rejects invalid value type', () => {
+        expect(validate(0)).toEqual(expect.any(String));
+        expect(validate([])).toEqual(expect.any(String));
+        expect(validate({})).toEqual(expect.any(String));
+        expect(validate(true)).toEqual(expect.any(String));
+        expect(validate(null)).toEqual(expect.any(String));
+        expect(validate(undefined)).toEqual(expect.any(String));
     });
 });

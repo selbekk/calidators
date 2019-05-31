@@ -1,4 +1,4 @@
 import { isNumber, toNumber } from './utilities';
 
 export default config => value =>
-    isNumber(toNumber(value)) ? config.message : null;
+    !isNumber(config.strict ? value : toNumber(value)) ? config.message : null;

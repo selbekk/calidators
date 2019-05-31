@@ -1,5 +1,11 @@
-export default config => value => {
-    const stringBlacklist = config.blacklist.map(w => String(w));
+import { toString } from './utilities';
 
-    return stringBlacklist.includes(value) ? config.message : null;
+export default config => value => {
+    const blacklist = config.strict
+        ? config.blacklist
+        : config.blacklist.map(toString);
+
+    return blacklist.includes(config.strict ? value : toString(value))
+        ? config.message
+        : null;
 };

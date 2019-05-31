@@ -19,77 +19,81 @@ export const getType = value =>
         object: isObject,
         string: isString,
         undefined: isUndefined,
-    }).reduce((type, [key, isType]) => {
-        if (type !== false) {
-            return type;
-        }
+    }).reduce(
+        (type, [key, isType]) =>
+            type !== false || !isType(value) ? type : Types[key],
+        false,
+    );
 
-        if (isType(value)) {
-            return Types[key];
-        }
-    }, false);
+export const functionToTag = func => Function.prototype.toString.call(func);
 
-export const funcToStr = func => Function.prototype.toString.call(func);
+export const objectToTag = obj => Object.prototype.toString.call(obj);
 
-export const objToStr = obj => Object.prototype.toString.call(obj);
-
-export const typeToStr = type =>
-    isFunction(type) ? `${type}`.match(/function (\w+)/)[1] : null;
+export const typeToString = type =>
+    isFunction(type)
+        ? functionToTag(type).match(/^function (\w+)/)[1]
+        : objectToTag(type).match(/^\[object (\w+)/)[1];
 
 export const isInvalidType = (value, validTypes) => {
     const type = getType(value);
 
     return !validTypes.includes(type)
-        ? `Invalid value type "${typeToStr(
+        ? `Invalid value type "${typeToString(
               type,
-          )}", expected value type(s): ${validTypes.map(typeToStr).join(', ')}`
+          )}", expected value type(s): ${validTypes
+              .map(typeToString)
+              .join(', ')}`
         : null;
 };
 
 export const isArray = value => Array.isArray(value);
 
-export const isBoolean = value => typeof value === 'boolean';
+export const isBoolean = value =>
+    typeof value === 'boolean' ||
+    (isObjectLike(value) && objectToTag(value) === '[object Boolean]');
 
 export const isEmptyString = value =>
     isString(value) && value.trim().length === 0;
 
 export const isFunction = value => typeof value === 'function';
 
-export const isObject = value => {
-    if (!isObjectLike(value) || objToStr(value) !== '[object Object]') {
-        return false;
-    }
-
-    const proto = Object.getPrototypeOf(Object(value));
-
-    if (isNull(proto)) {
-        return true;
-    }
-
-    const Ctor =
-        Object.prototype.hasOwnProperty.call(proto, 'constructor') &&
-        proto.constructor;
-
-    return (
-        isFunction(Ctor) &&
-        Ctor instanceof Ctor &&
-        funcToStr(Ctor) === funcToStr(Object)
-    );
-};
-
-export const isObjectLike = value =>
-    !isNull(value) || typeof value === 'object';
-
 export const isNil = value => isNull(value) || isUndefined(value);
 
 export const isNull = value => value === null;
 
 export const isNumber = value =>
-    (typeof number === 'number' ||
-        (isObjectLike(value) && objToStr(value) === '[object Number]')) &&
-    !isNaN(number);
+    (typeof value === 'number' ||
+        (isObjectLike(value) && objectToTag(value) === '[object Number]')) &&
+    !isNaN(value);
 
-export const isString = value => typeof value === 'string';
+export const isObject = value => {
+    if (!isObjectLike(value) || objectToTag(value) !== '[object Object]') {
+        return false;
+    }
+
+    const prototype = Object.getPrototypeOf(Object(value));
+
+    if (isNull(prototype)) {
+        return true;
+    }
+
+    const Ctor =
+        Object.prototype.hasOwnProperty.call(prototype, 'constructor') &&
+        prototype.constructor;
+
+    return (
+        isFunction(Ctor) &&
+        Ctor instanceof Ctor &&
+        functionToTag(Ctor) === functionToTag(Object)
+    );
+};
+
+export const isObjectLike = value =>
+    !isNull(value) && typeof value === 'object';
+
+export const isString = value =>
+    typeof value === 'string' ||
+    (isObjectLike(value) && objectToTag(value) === '[object String]');
 
 export const isUndefined = value => value === undefined;
 
@@ -97,3 +101,6 @@ export const toNumber = value =>
     isNumber(value) || (isString(value) && !isEmptyString(value))
         ? Number(value)
         : NaN;
+
+export const toString = value =>
+    isArray(value) || isObject(value) ? JSON.stringify(value) : `${value}`;
