@@ -1,4 +1,8 @@
 {
     "presets": ["env"],
-    "plugins": ["transform-es2015-modules-umd", "transform-object-rest-spread"]
+    "plugins": [
+        "dev-expression",
+        "transform-es2015-modules-umd",
+        "transform-object-rest-spread"
+    ]
 }

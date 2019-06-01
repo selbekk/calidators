@@ -1,4 +1,5 @@
 import isLessThan from '../isLessThan';
+import { INVALID_TYPE } from '../utilities';
 
 const message = 'fail';
 
@@ -31,10 +32,9 @@ describe('isLessThan validator', () => {
     });
 
     it('rejects invalid value type', () => {
-        expect(isLessThan()([])).toEqual(expect.any(String));
-        expect(isLessThan()({})).toEqual(expect.any(String));
-        expect(isLessThan()(true)).toEqual(expect.any(String));
-        expect(isLessThan()(null)).toEqual(expect.any(String));
-        expect(isLessThan()(undefined)).toEqual(expect.any(String));
+        [[], {}, true, null, undefined].forEach((value, index) => {
+            expect(isLessThan()(value)).toEqual(INVALID_TYPE);
+            expect(console.error).toHaveBeenCalledTimes(index + 1);
+        });
     });
 });

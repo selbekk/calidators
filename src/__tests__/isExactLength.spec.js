@@ -1,7 +1,17 @@
 import isExactLength from '../isExactLength';
+import { INVALID_TYPE } from '../utilities';
 
 const message = 'fail';
 const length = 3;
+const validate = isExactLength({ message, length });
+
+function foo(len) {
+    return {
+        get length() {
+            return len;
+        },
+    };
+}
 
 function Foo(len) {
     this._length = len;
@@ -15,61 +25,40 @@ Object.defineProperty(Foo.prototype, 'length', {
 
 describe('isExactLength validator', () => {
     it('accepts when length is equal to config length', () => {
-        expect(isExactLength({ message, length })('lol')).toBe(null);
-        expect(isExactLength({ message, length })('0mg')).toBe(null);
-        expect(isExactLength({ message, length })('321')).toBe(null);
-        expect(isExactLength({ message, length })(['a', 'b', 'c'])).toBe(null);
-        expect(isExactLength({ message, length })({ length })).toBe(null);
-        expect(
-            isExactLength({ message, length })({
-                get length() {
-                    return length;
-                },
-            }),
-        ).toBe(null);
-        expect(isExactLength({ message, length })(new Foo(length))).toBe(null);
+        expect(validate('lol')).toBe(null);
+        expect(validate('0mg')).toBe(null);
+        expect(validate('321')).toBe(null);
+        expect(validate(Array(length))).toBe(null);
+        expect(validate({ length })).toBe(null);
+        expect(validate(foo(length))).toBe(null);
+        expect(validate(new Foo(length))).toBe(null);
     });
 
     it('rejects when length is longer than config length', () => {
-        expect(isExactLength({ message, length })('hi there')).toBe(message);
-        expect(isExactLength({ message, length })('ugga bugga')).toBe(message);
-        expect(isExactLength({ message, length })('four')).toBe(message);
-        expect(isExactLength({ message, length })(['a', 'b', 'c', 'd'])).toBe(
-            message,
-        );
-        expect(isExactLength({ message, length })({ length: 4 })).toBe(message);
-        expect(
-            isExactLength({ message, length })({
-                get length() {
-                    return 4;
-                },
-            }),
-        ).toBe(message);
-        expect(isExactLength({ message, length })(new Foo(4))).toBe(message);
+        expect(validate('hi there')).toBe(message);
+        expect(validate('ugga bugga')).toBe(message);
+        expect(validate('four')).toBe(message);
+        expect(validate(Array(length + 1))).toBe(message);
+        expect(validate({ length: length + 1 })).toBe(message);
+        expect(validate(foo(length + 1))).toBe(message);
+        expect(validate(new Foo(length + 1))).toBe(message);
     });
 
     it('rejects when length is shorter than config length', () => {
-        expect(isExactLength({ message, length })('')).toBe(message);
-        expect(isExactLength({ message, length })('hi')).toBe(message);
-        expect(isExactLength({ message, length })('yo')).toBe(message);
-        expect(isExactLength({ message, length })(' ')).toBe(message);
-        expect(isExactLength({ message, length })(['a', 'b'])).toBe(message);
-        expect(isExactLength({ message, length })({ length: 2 })).toBe(message);
-        expect(
-            isExactLength({ message, length })({
-                get length() {
-                    return 2;
-                },
-            }),
-        ).toBe(message);
-        expect(isExactLength({ message, length })(new Foo(2))).toBe(message);
+        expect(validate('')).toBe(message);
+        expect(validate('hi')).toBe(message);
+        expect(validate('yo')).toBe(message);
+        expect(validate(' ')).toBe(message);
+        expect(validate(Array(length - 1))).toBe(message);
+        expect(validate({ length: length - 1 })).toBe(message);
+        expect(validate(foo(length - 1))).toBe(message);
+        expect(validate(new Foo(length - 1))).toBe(message);
     });
 
     it('rejects invalid value type', () => {
-        expect(isExactLength()(0)).toEqual(expect.any(String));
-        expect(isExactLength()({})).toEqual(expect.any(String));
-        expect(isExactLength()(true)).toEqual(expect.any(String));
-        expect(isExactLength()(null)).toEqual(expect.any(String));
-        expect(isExactLength()(undefined)).toEqual(expect.any(String));
+        [0, {}, true, null, undefined].forEach((value, index) => {
+            expect(validate(value)).toEqual(INVALID_TYPE);
+            expect(console.error).toHaveBeenCalledTimes(index + 1);
+        });
     });
 });

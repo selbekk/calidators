@@ -1,4 +1,5 @@
 import isGreaterThan from '../isGreaterThan';
+import { INVALID_TYPE } from '../utilities';
 
 const message = 'fail';
 
@@ -30,10 +31,9 @@ describe('isGreaterThan validator', () => {
     });
 
     it('rejects invalid value type', () => {
-        expect(isGreaterThan()([])).toEqual(expect.any(String));
-        expect(isGreaterThan()({})).toEqual(expect.any(String));
-        expect(isGreaterThan()(true)).toEqual(expect.any(String));
-        expect(isGreaterThan()(null)).toEqual(expect.any(String));
-        expect(isGreaterThan()(undefined)).toEqual(expect.any(String));
+        [[], {}, true, null, undefined].forEach((value, index) => {
+            expect(isGreaterThan()(value)).toEqual(INVALID_TYPE);
+            expect(console.error).toHaveBeenCalledTimes(index + 1);
+        });
     });
 });

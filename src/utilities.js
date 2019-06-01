@@ -1,3 +1,7 @@
+import warning from 'warning';
+
+export const INVALID_TYPE = 'Invalid type, see console for details.';
+
 export const Types = Object.freeze({
     array: Array,
     boolean: Boolean,
@@ -36,13 +40,18 @@ export const typeToString = type =>
 
 export const isInvalidType = (value, validTypes) => {
     const type = getType(value);
+    const isValid = validTypes.includes(type);
 
-    return !validTypes.includes(type)
-        ? `Invalid value type "${typeToString(
-              type,
-          )}", expected value type(s): ${validTypes
-              .map(typeToString)
-              .join(', ')}`
+    warning(
+        isValid,
+        'Invalid value type "%s", expected value type%s: %s',
+        typeToString(type),
+        validTypes.length > 1 ? 's' : '',
+        validTypes.map(typeToString).join(', '),
+    );
+
+    return !isValid && process.env.NODE_ENV !== 'production'
+        ? INVALID_TYPE
         : null;
 };
 

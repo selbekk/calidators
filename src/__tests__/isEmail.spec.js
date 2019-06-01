@@ -1,4 +1,5 @@
 import isEmail from '../isEmail';
+import { INVALID_TYPE } from '../utilities';
 
 const message = 'message';
 const validate = isEmail({ message });
@@ -23,11 +24,9 @@ describe('isEmail validator', () => {
     });
 
     it('rejects invalid value type', () => {
-        expect(validate(0)).toEqual(expect.any(String));
-        expect(validate([])).toEqual(expect.any(String));
-        expect(validate({})).toEqual(expect.any(String));
-        expect(validate(true)).toEqual(expect.any(String));
-        expect(validate(null)).toEqual(expect.any(String));
-        expect(validate(undefined)).toEqual(expect.any(String));
+        [0, [], {}, true, null, undefined].forEach((value, index) => {
+            expect(validate(value)).toEqual(INVALID_TYPE);
+            expect(console.error).toHaveBeenCalledTimes(index + 1);
+        });
     });
 });

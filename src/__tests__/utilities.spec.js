@@ -1,4 +1,5 @@
 import {
+    INVALID_TYPE,
     Types,
     getType,
     functionToTag,
@@ -93,7 +94,11 @@ describe('isInvalidType', () => {
     });
 
     it('should return message', () => {
-        expect(isInvalidType(0, [Types.string])).toEqual(expect.any(String));
+        expect(isInvalidType(0, [Types.string])).toEqual(INVALID_TYPE);
+        expect(isInvalidType(true, [Types.null, Types.number])).toEqual(
+            INVALID_TYPE,
+        );
+        expect(console.error).toHaveBeenCalledTimes(2);
     });
 });
 

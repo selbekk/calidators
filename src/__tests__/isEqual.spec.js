@@ -13,21 +13,21 @@ describe('isEqual validator', () => {
         ).toBe(null);
         expect(isEqual({ message, value: '123' })('123')).toBe(null);
         expect(isEqual({ message, value: '0' })('0')).toBe(null);
-        expect(isEqual({ message, value: '-123' })('-123')).toBe(null);
-        expect(isEqual({ message, value: 123 })('123')).toBe(null);
+        expect(isEqual({ message, value: '-123' })(-123)).toBe(null);
+        expect(isEqual({ message, value: 123 })(123)).toBe(null);
         expect(isEqual({ message, value: 0 })('0')).toBe(null);
         expect(isEqual({ message, value: -123 })('-123')).toBe(null);
         expect(isEqual({ message, value: 'true' })('true')).toBe(null);
         expect(isEqual({ message, value: true })('true')).toBe(null);
-        expect(isEqual({ message, value: 'false' })('false')).toBe(null);
-        expect(isEqual({ message, value: false })('false')).toBe(null);
         expect(isEqual({ message, value: [] })('[]')).toBe(null);
         expect(isEqual({ message, value: [] })([])).toBe(null);
+        expect(isEqual({ message, value: '[]' })([])).toBe(null);
         expect(isEqual({ message, value: {} })('{}')).toBe(null);
         expect(isEqual({ message, value: {} })({})).toBe(null);
+        expect(isEqual({ message, value: '{}' })({})).toBe(null);
     });
 
-    it('rejects when value is not equal', () => {
+    it('rejects unequal values', () => {
         expect(isEqual({ message, value: 'arnold' })('')).toBe(message);
         expect(isEqual({ message, value: 'hi' })('ho')).toBe(message);
         expect(isEqual({ message, value: '  ' })(' ')).toBe(message);

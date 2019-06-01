@@ -1,4 +1,5 @@
 import hasChar from '../hasChar';
+import { INVALID_TYPE } from '../utilities';
 
 const message = 'message';
 
@@ -23,10 +24,9 @@ describe('hasChar validator', () => {
     });
 
     it('rejects invalid value type', () => {
-        expect(hasChar()([])).toEqual(expect.any(String));
-        expect(hasChar()({})).toEqual(expect.any(String));
-        expect(hasChar()(true)).toEqual(expect.any(String));
-        expect(hasChar()(null)).toEqual(expect.any(String));
-        expect(hasChar()(undefined)).toEqual(expect.any(String));
+        [[], {}, true, null, undefined].forEach((value, index) => {
+            expect(hasChar()(value)).toEqual(INVALID_TYPE);
+            expect(console.error).toHaveBeenCalledTimes(index + 1);
+        });
     });
 });
