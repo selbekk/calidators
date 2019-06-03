@@ -98,7 +98,7 @@ pull request!
 
 #### `isRequired`
 
-Validates that a value is not the empty string.
+Validates that a value is not an empty string, null or undefined.
 
 Validates against all value types.
 
@@ -118,7 +118,7 @@ isRequired({ message })('Some input') === null;
 
 Validates that a field only contains numeric characters.
 
-Validates against numbers and strings only.
+Validates against all value types.
 
 An optional strict parameter disallows type conversion.
 

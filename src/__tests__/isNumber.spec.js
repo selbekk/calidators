@@ -16,6 +16,10 @@ describe('isNumber validator', () => {
         expect(isNumber({ message })('not a number')).toBe(message);
         expect(isNumber({ message })('NaN')).toBe(message);
         expect(isNumber({ message })('12x21')).toBe(message);
+        expect(isNumber({ message })([])).toBe(message);
+        expect(isNumber({ message })({})).toBe(message);
+        expect(isNumber({ message })(null)).toBe(message);
+        expect(isNumber({ message })(undefined)).toBe(message);
     });
 
     it('does not do type conversions when in strict mode', () => {
