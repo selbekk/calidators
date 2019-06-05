@@ -25,8 +25,8 @@ export default config => value => {
         const intLength = Math.max(valInt.length, testInt.length);
         const decLength = Math.max(valDec.length, testDec.length);
 
-        valInt = valInt.padStart(intLength, '.');
-        testInt = testInt.padStart(intLength, '.');
+        valInt = valInt.padStart(intLength, '0');
+        testInt = testInt.padStart(intLength, '0');
 
         valDec = valDec.padEnd(decLength, '0');
         testDec = testDec.padEnd(decLength, '0');
