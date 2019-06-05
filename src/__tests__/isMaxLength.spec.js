@@ -1,24 +1,64 @@
-import { isMaxLength } from '..';
+import isMaxLength from '../isMaxLength';
+import { INVALID_TYPE } from '../utilities';
 
 const message = 'fail';
+const length = 3;
+const validate = isMaxLength({ message, length });
+
+function foo(len) {
+    return {
+        get length() {
+            return len;
+        },
+    };
+}
+
+function Foo(len) {
+    this._length = len;
+}
+
+Object.defineProperty(Foo.prototype, 'length', {
+    get: function length() {
+        return this._length;
+    },
+});
 
 describe('isMaxLength validator', () => {
-    it('accepts the empty string', () => {
-        expect(isMaxLength({ message, length: 3 })('')).toBe(null);
-    });
     it('rejects when length is longer than config length', () => {
-        expect(isMaxLength({ message, length: 3 })('hi there')).toBe(message);
-        expect(isMaxLength({ message, length: 3 })('ugga bugga')).toBe(message);
-        expect(isMaxLength({ message, length: 3 })('four')).toBe(message);
+        expect(validate('hi there')).toBe(message);
+        expect(validate('ugga bugga')).toBe(message);
+        expect(validate('four')).toBe(message);
+        expect(validate(Array(length + 1))).toBe(message);
+        expect(validate({ length: length + 1 })).toBe(message);
+        expect(validate(foo(length + 1))).toBe(message);
+        expect(validate(new Foo(length + 1))).toBe(message);
     });
+
     it('accepts when length is shorter than config length', () => {
-        expect(isMaxLength({ message, length: 3 })('hi')).toBe(null);
-        expect(isMaxLength({ message, length: 3 })('yo')).toBe(null);
-        expect(isMaxLength({ message, length: 3 })(' ')).toBe(null);
+        expect(validate('')).toBe(null);
+        expect(validate('hi')).toBe(null);
+        expect(validate('yo')).toBe(null);
+        expect(validate(' ')).toBe(null);
+        expect(validate(Array(length - 1))).toBe(null);
+        expect(validate({ length: length - 1 })).toBe(null);
+        expect(validate(foo(length - 1))).toBe(null);
+        expect(validate(new Foo(length - 1))).toBe(null);
     });
+
     it('accepts when length is equal to config length', () => {
-        expect(isMaxLength({ message, length: 3 })('lol')).toBe(null);
-        expect(isMaxLength({ message, length: 3 })('0mg')).toBe(null);
-        expect(isMaxLength({ message, length: 3 })('321')).toBe(null);
+        expect(validate('lol')).toBe(null);
+        expect(validate('0mg')).toBe(null);
+        expect(validate('321')).toBe(null);
+        expect(validate(Array(length))).toBe(null);
+        expect(validate({ length })).toBe(null);
+        expect(validate(foo(length))).toBe(null);
+        expect(validate(new Foo(length))).toBe(null);
+    });
+
+    it('rejects invalid value type', () => {
+        [0, {}, true, null, undefined].forEach((value, index) => {
+            expect(validate(value)).toEqual(INVALID_TYPE);
+            expect(console.error).toHaveBeenCalledTimes(index + 1);
+        });
     });
 });

@@ -1,8 +1,11 @@
-export default config => value => {
-    if (value === '') {
-        return null;
-    }
+import { toString } from './utilities';
 
-    const stringWhitelist = config.whitelist.map(w => String(w));
-    return !stringWhitelist.includes(value) ? config.message : null;
+export default config => value => {
+    const whitelist = config.strict
+        ? config.whitelist
+        : config.whitelist.map(toString);
+
+    return !whitelist.includes(config.strict ? value : toString(value))
+        ? config.message
+        : null;
 };

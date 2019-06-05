@@ -1,28 +1,27 @@
 import isWhitelisted from '../isWhitelisted';
 
 const message = 'fail';
+const whitelist = ['yellow', 'green', false, null, 0];
+
 describe('isWhitelisted validator', () => {
-    it('accepts the empty string', () => {
-        const whitelist = ['red', 'blue'];
-        expect(isWhitelisted({ message, whitelist })('')).toBe(null);
-    });
-
     it('accepts when value is in whitelist', () => {
-        const whitelist = ['red', 'blue'];
-        expect(isWhitelisted({ message, whitelist })('red')).toBe(null);
-        expect(isWhitelisted({ message, whitelist })('blue')).toBe(null);
-    });
-
-    it('accepts when whitelist contains non-string values', () => {
-        const whitelist = [0, false];
-        expect(isWhitelisted({ message, whitelist })('0')).toBe(null);
+        expect(isWhitelisted({ message, whitelist })('yellow')).toBe(null);
         expect(isWhitelisted({ message, whitelist })('false')).toBe(null);
-        expect(isWhitelisted({ message, whitelist })('true')).toBe(message);
+        expect(isWhitelisted({ message, whitelist })('0')).toBe(null);
     });
 
-    it("rejects when value isn't in whitelist", () => {
-        const whitelist = ['green', 'yellow'];
+    it('rejects when value is not in whitelist', () => {
+        expect(isWhitelisted({ message, whitelist })('')).toBe(message);
         expect(isWhitelisted({ message, whitelist })('red')).toBe(message);
         expect(isWhitelisted({ message, whitelist })('blue')).toBe(message);
+    });
+
+    it('does not do type conversions when in strict mode', () => {
+        expect(
+            isWhitelisted({ message, whitelist, strict: true })('false'),
+        ).toBe(message);
+        expect(isWhitelisted({ message, whitelist, strict: true })('0')).toBe(
+            message,
+        );
     });
 });

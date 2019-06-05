@@ -22,6 +22,7 @@
     },
     "devDependencies": {
         "babel-cli": "^6.26.0",
+        "babel-plugin-dev-expression": "^0.2.1",
         "babel-plugin-transform-es2015-modules-umd": "^6.24.1",
         "babel-plugin-transform-object-rest-spread": "^6.26.0",
         "babel-preset-env": "^1.6.1",
@@ -42,7 +43,8 @@
         }
     },
     "dependencies": {
-        "invariant": "^2.2.4"
+        "invariant": "^2.2.4",
+        "warning": "^4.0.3"
     },
     "jest": {
         "coverageDirectory": "./coverage/",

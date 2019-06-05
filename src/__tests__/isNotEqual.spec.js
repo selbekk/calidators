@@ -3,10 +3,8 @@ import isNotEqual from '../isNotEqual';
 const message = 'fail';
 
 describe('isNotEqual validator', () => {
-    it('accepts the empty string', () => {
+    it('accepts unequal values', () => {
         expect(isNotEqual({ message, value: 'arnold' })('')).toBe(null);
-    });
-    it('accepts not equal strings', () => {
         expect(isNotEqual({ message, value: 'arnold' })('sylvester')).toBe(
             null,
         );
@@ -16,29 +14,69 @@ describe('isNotEqual validator', () => {
                 'stringwithoutwhitespace',
             ),
         ).toBe(null);
-    });
-
-    it('accepts inequal numbers', () => {
         expect(isNotEqual({ message, value: '123' })('1234')).toBe(null);
         expect(isNotEqual({ message, value: '0' })('01')).toBe(null);
         expect(isNotEqual({ message, value: '-123' })('-1234')).toBe(null);
         expect(isNotEqual({ message, value: 123 })('1234')).toBe(null);
         expect(isNotEqual({ message, value: 0 })('01')).toBe(null);
         expect(isNotEqual({ message, value: -123 })('-1234')).toBe(null);
-    });
-
-    it('accepts inequal booleans', () => {
         expect(isNotEqual({ message, value: 'true' })('false')).toBe(null);
         expect(isNotEqual({ message, value: true })('false')).toBe(null);
         expect(isNotEqual({ message, value: 'false' })('true')).toBe(null);
         expect(isNotEqual({ message, value: false })('true')).toBe(null);
+        expect(isNotEqual({ message, value: [] })(['foo'])).toBe(null);
+        expect(isNotEqual({ message, value: [true] })([false])).toBe(null);
     });
 
-    it('rejects when value is equal', () => {
-        expect(isNotEqual({ message, value: 'hi' })('hi')).toBe(message);
-        expect(isNotEqual({ message, value: '  ' })('  ')).toBe(message);
+    it('rejects equal values', () => {
+        expect(isNotEqual({ message, value: 'arnold' })('arnold')).toBe(
+            message,
+        );
+        expect(isNotEqual({ message, value: '' })('')).toBe(message);
+        expect(
+            isNotEqual({ message, value: 'string with whitespace' })(
+                'string with whitespace',
+            ),
+        ).toBe(message);
         expect(isNotEqual({ message, value: '123' })('123')).toBe(message);
-        expect(isNotEqual({ message, value: 123 })('123')).toBe(message);
-        expect(isNotEqual({ message, value: false })('false')).toBe(message);
+        expect(isNotEqual({ message, value: '0' })('0')).toBe(message);
+        expect(isNotEqual({ message, value: '-123' })(-123)).toBe(message);
+        expect(isNotEqual({ message, value: 123 })(123)).toBe(message);
+        expect(isNotEqual({ message, value: 0 })('0')).toBe(message);
+        expect(isNotEqual({ message, value: -123 })('-123')).toBe(message);
+        expect(isNotEqual({ message, value: 'true' })('true')).toBe(message);
+        expect(isNotEqual({ message, value: true })('true')).toBe(message);
+        expect(isNotEqual({ message, value: [] })('[]')).toBe(message);
+        expect(isNotEqual({ message, value: [] })([])).toBe(message);
+        expect(isNotEqual({ message, value: '[]' })([])).toBe(message);
+        expect(isNotEqual({ message, value: {} })('{}')).toBe(message);
+        expect(isNotEqual({ message, value: {} })({})).toBe(message);
+        expect(isNotEqual({ message, value: '{}' })({})).toBe(message);
+    });
+
+    it('does not do type conversions when in strict mode', () => {
+        expect(isNotEqual({ message, value: 123, strict: true })('123')).toBe(
+            null,
+        );
+        expect(isNotEqual({ message, value: true, strict: true })('true')).toBe(
+            null,
+        );
+        expect(
+            isNotEqual({ message, value: false, strict: true })('false'),
+        ).toBe(null);
+        expect(isNotEqual({ message, value: null, strict: true })('null')).toBe(
+            null,
+        );
+        expect(
+            isNotEqual({ message, value: undefined, strict: true })(
+                'undefined',
+            ),
+        ).toBe(null);
+        expect(isNotEqual({ message, value: [], strict: true })('[]')).toBe(
+            null,
+        );
+        expect(isNotEqual({ message, value: {}, strict: true })('{}')).toBe(
+            null,
+        );
     });
 });

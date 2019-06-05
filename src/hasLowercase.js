@@ -1,8 +1,11 @@
-const LOWERCASE_REGEXP = /[a-z]+/;
+import { Types, isInvalidType, isString } from './utilities';
+
+const LOWERCASE_REGEXP = /[a-z]/;
 
 export default config => value => {
-    if (value === '') {
-        return null;
+    if (isString(value)) {
+        return !LOWERCASE_REGEXP.test(value) ? config.message : null;
     }
-    return !LOWERCASE_REGEXP.test(value) ? config.message : null;
+
+    return isInvalidType(value, [Types.string]);
 };
