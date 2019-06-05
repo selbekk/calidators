@@ -6,8 +6,8 @@ export default config => value => {
         let testValue = `${config.value}`;
         const length = Math.max(inputValue.length, testValue.length);
 
-        inputValue = inputValue.padStart(length, '0');
-        testValue = testValue.padStart(length, '0');
+        inputValue = inputValue.padStart(length, '.');
+        testValue = testValue.padStart(length, '.');
 
         return inputValue <= testValue ? config.message : null;
     }
