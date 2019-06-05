@@ -7,6 +7,11 @@ describe('isLessThan validator', () => {
     it('accepts when value is less than config value', () => {
         expect(isLessThan({ message, value: 0 })('-1')).toBe(null);
         expect(isLessThan({ message, value: 0 })('-0.001')).toBe(null);
+        expect(isLessThan({ message, value: 1 })(0.05)).toBe(null);
+        expect(isLessThan({ message, value: 0.8 })(0.05)).toBe(null);
+        expect(isLessThan({ message, value: 0.034 })(0.0005)).toBe(null);
+        expect(isLessThan({ message, value: -0.034 })(-1.0005)).toBe(null);
+        expect(isLessThan({ message, value: 1 })('-0.7')).toBe(null);
         expect(isLessThan({ message, value: 1.001 })('1')).toBe(null);
         expect(isLessThan({ message, value: 11 })('10')).toBe(null);
         expect(isLessThan({ message, value: -100 })('-1000')).toBe(null);
@@ -29,6 +34,7 @@ describe('isLessThan validator', () => {
         expect(isLessThan({ message, value: 10 })('10.001')).toBe(message);
         expect(isLessThan({ message, value: 10 })('11')).toBe(message);
         expect(isLessThan({ message, value: -10 })('0')).toBe(message);
+        expect(isLessThan({ message, value: 1.3 })('1.407')).toBe(message);
         expect(isLessThan({ message, value: -10 })(20)).toBe(message);
         expect(isLessThan({ message, value: -10 })('a')).toBe(message);
         expect(isLessThan({ message, value: -1000 })('-100')).toBe(message);
