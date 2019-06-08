@@ -2,6 +2,8 @@ import warning from 'warning';
 
 export const INVALID_TYPE = 'Invalid type, see console for details.';
 
+const NEGATIVE_REGEXP = /^-/;
+
 export const Types = Object.freeze({
     array: Array,
     boolean: Boolean,
@@ -113,3 +115,54 @@ export const toNumber = value =>
 
 export const toString = value =>
     isArray(value) || isObject(value) ? JSON.stringify(value) : `${value}`;
+
+export const whenValueIs = (
+    value,
+    { lessThan, equalTo, greaterThan },
+    model,
+) => {
+    if (isNumber(value) || isString(value)) {
+        value = `${value}`.trim();
+        model = `${model}`.trim();
+
+        const valueIsNegative = NEGATIVE_REGEXP.test(value);
+        const modelIsNegative = NEGATIVE_REGEXP.test(model);
+
+        if (valueIsNegative && !modelIsNegative) {
+            return lessThan;
+        }
+
+        if (!valueIsNegative && modelIsNegative) {
+            return greaterThan;
+        }
+
+        value = value.replace(NEGATIVE_REGEXP, '');
+        model = model.replace(NEGATIVE_REGEXP, '');
+
+        let [valInt, valDec = ''] = value.split('.');
+        let [modInt, modDec = ''] = model.split('.');
+        const intLength = Math.max(valInt.length, modInt.length);
+        const decLength = Math.max(valDec.length, modDec.length);
+
+        valInt = valInt.padStart(intLength, '0');
+        modInt = modInt.padStart(intLength, '0');
+
+        valDec = valDec.padEnd(decLength, '0');
+        modDec = modDec.padEnd(decLength, '0');
+
+        value = `${valInt}.${valDec}`;
+        model = `${modInt}.${modDec}`;
+
+        if (value === model) {
+            return equalTo;
+        }
+
+        return (valueIsNegative && modelIsNegative
+          ? value > model
+          : value < model)
+            ? lessThan
+            : greaterThan;
+    }
+
+    return isInvalidType(value, [Types.number, Types.string]);
+};

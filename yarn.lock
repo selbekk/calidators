@@ -2968,6 +2968,11 @@ jest-environment-node@^22.4.3:
     jest-mock "^22.4.3"
     jest-util "^22.4.3"
 
+jest-expect-message@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/jest-expect-message/-/jest-expect-message-1.0.2.tgz#6d67cdf093457a607d231038a3b84aa3a076bcba"
+  integrity sha512-WFiXMgwS2lOqQZt1iJMI/hOXpUm32X+ApsuzYcQpW5m16Pv6/Gd9kgC+Q+Q1YVNU04kYcAOv9NXMnjg6kKUy6Q==
+
 jest-get-type@^22.4.3:
   version "22.4.3"
   resolved "https://registry.yarnpkg.com/jest-get-type/-/jest-get-type-22.4.3.tgz#e3a8504d8479342dd4420236b322869f18900ce4"
