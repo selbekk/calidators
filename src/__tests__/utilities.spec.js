@@ -18,6 +18,7 @@ import {
     isUndefined,
     toNumber,
     toString,
+    whenValueIs,
 } from '../utilities';
 
 const types = [
@@ -263,5 +264,129 @@ describe('toString', () => {
             '',
             'undefined',
         ]);
+    });
+});
+
+describe('whenValueIs', () => {
+    const message = 'fail';
+
+    it('should return lessThan', () => {
+        const operators = {
+            lessThan: null,
+            equalTo: message,
+            greaterThan: message,
+        };
+
+        expect(whenValueIs(0, operators, 1)).toBe(null);
+
+        [0.001, 0.25, 0.5, 0.75, 0.999, 1].forEach(value => {
+            [1, 0, -1].forEach(model => {
+                const val = model - value;
+
+                expect(
+                    whenValueIs(val, operators, model),
+                    `${val} < ${model}`,
+                ).toBe(null);
+                expect(
+                    whenValueIs(`${val}`, operators, model),
+                    `"${val}" < ${model}`,
+                ).toBe(null);
+                expect(
+                    whenValueIs(val, operators, `${model}`),
+                    `${val} < "${model}"`,
+                ).toBe(null);
+                expect(
+                    whenValueIs(`${val}`, operators, `${model}`),
+                    `"${val}" < "${model}"`,
+                ).toBe(null);
+            });
+        });
+
+        // Utilizes JS string compare which is Unicode index ordered:
+        // https://javascript.info/comparison#string-comparison
+        expect(whenValueIs(9, operators, 'A')).toBe(null);
+        expect(whenValueIs('A', operators, 'a')).toBe(null);
+        expect(whenValueIs('B', operators, 'a')).toBe(null);
+        expect(whenValueIs('Foo', operators, 'foo')).toBe(null);
+        expect(whenValueIs('foo', operators, 'Foobar')).toBe(null);
+    });
+
+    it('should return equalTo', () => {
+        const operators = {
+            lessThan: message,
+            equalTo: null,
+            greaterThan: message,
+        };
+
+        expect(whenValueIs(-0, operators, +0)).toBe(null);
+        expect(whenValueIs(0.1, operators, '.1')).toBe(null);
+        expect(whenValueIs('.1', operators, 0.1)).toBe(null);
+        expect(whenValueIs('-.1', operators, -0.1)).toBe(null);
+        expect(whenValueIs(1, operators, 1)).toBe(null);
+        expect(whenValueIs(1.0, operators, 1)).toBe(null);
+        expect(whenValueIs(1, operators, 1.0)).toBe(null);
+        expect(whenValueIs(1, operators, '1')).toBe(null);
+        expect(whenValueIs('1', operators, 1)).toBe(null);
+        expect(whenValueIs(1, operators, '1.00')).toBe(null);
+        expect(whenValueIs('1.00', operators, 1)).toBe(null);
+        expect(whenValueIs('1', operators, '1')).toBe(null);
+        expect(whenValueIs('1.0', operators, '1.000')).toBe(null);
+        expect(whenValueIs('a', operators, 'a')).toBe(null);
+    });
+
+    it('should return greaterThan', () => {
+        const operators = {
+            lessThan: message,
+            equalTo: message,
+            greaterThan: null,
+        };
+
+        expect(whenValueIs(1, operators, 0)).toBe(null);
+
+        [0.001, 0.25, 0.5, 0.75, 0.999, 1].forEach(value => {
+            [1, 0, -1].forEach(model => {
+                const val = model + value;
+
+                expect(
+                    whenValueIs(val, operators, model),
+                    `${val} > ${model}`,
+                ).toBe(null);
+                expect(
+                    whenValueIs(`${val}`, operators, model),
+                    `"${val}" > ${model}`,
+                ).toBe(null);
+                expect(
+                    whenValueIs(val, operators, `${model}`),
+                    `${val} > "${model}"`,
+                ).toBe(null);
+                expect(
+                    whenValueIs(`${val}`, operators, `${model}`),
+                    `"${val}" > "${model}"`,
+                ).toBe(null);
+            });
+        });
+
+        // Utilizes JS string compare which is Unicode index ordered:
+        // https://javascript.info/comparison#string-comparison
+        expect(whenValueIs('A', operators, 9)).toBe(null);
+        expect(whenValueIs('a', operators, 'A')).toBe(null);
+        expect(whenValueIs('a', operators, 'B')).toBe(null);
+        expect(whenValueIs('foo', operators, 'Foo')).toBe(null);
+        expect(whenValueIs('Foobar', operators, 'foo')).toBe(null);
+    });
+
+    it('rejects invalid value type', () => {
+        jest.resetAllMocks();
+
+        [[], {}, true, null, undefined].forEach((value, index) => {
+            expect(
+                whenValueIs(
+                    value,
+                    { lessThan: null, equalTo: null, greaterThan: null },
+                    0,
+                ),
+            ).toEqual(INVALID_TYPE);
+            expect(console.error).toHaveBeenCalledTimes(index + 1);
+        });
     });
 });

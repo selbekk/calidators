@@ -21,7 +21,9 @@ describe('isRegexMatch validator', () => {
 
     it('rejects invalid value type', () => {
         [0, [], {}, true, null, undefined].forEach((value, index) => {
-            expect(isRegexMatch()(value)).toEqual(INVALID_TYPE);
+            expect(isRegexMatch({ message, regex: /foo/ })(value)).toEqual(
+                INVALID_TYPE,
+            );
             expect(console.error).toHaveBeenCalledTimes(index + 1);
         });
     });

@@ -25,7 +25,7 @@ describe('hasChar validator', () => {
 
     it('rejects invalid value type', () => {
         [[], {}, true, null, undefined].forEach((value, index) => {
-            expect(hasChar()(value)).toEqual(INVALID_TYPE);
+            expect(hasChar({ message, char: '' })(value)).toEqual(INVALID_TYPE);
             expect(console.error).toHaveBeenCalledTimes(index + 1);
         });
     });
