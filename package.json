@@ -34,7 +34,7 @@
         "prettier": "^1.11.1",
         "pretty-quick": "^1.4.1",
         "rimraf": "^2.6.2",
-        "semantic-release": "^15.1.5",
+        "semantic-release": "^17.2.3",
         "travis-deploy-once": "^4.4.1"
     },
     "files": ["README.md", "dist"],
